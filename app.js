@@ -137,9 +137,9 @@ analyzeBtn.addEventListener("click", async () => {
 
 // ================= 4. 결과 화면 그리기 =================
 function renderResult(data) {
-  // 위험도 배지
-  const badge = document.getElementById("risk-badge");
-  badge.dataset.level = data.risk_level;
+  // 위험도 배너
+  const banner = document.getElementById("risk-banner");
+  banner.dataset.level = data.risk_level;
   document.getElementById("risk-level-text").textContent = data.risk_level;
   document.getElementById("risk-score-text").textContent =
     "위험도 " + data.score + "점";
@@ -160,15 +160,17 @@ function renderResult(data) {
   });
 
   // 연락처: 탭하면 바로 전화 걸리는 버튼
+  const urgent = data.risk_level === "위험" || data.risk_level === "경고";
   const contactsEl = document.getElementById("action-contacts");
   contactsEl.innerHTML = "";
   (guide.contacts || []).forEach((c) => {
     const a = document.createElement("a");
     a.className = "contact-btn";
+    a.dataset.urgent = String(urgent);
     a.href = "tel:" + String(c.phone).replace(/[^0-9+]/g, "");
     a.innerHTML =
-      '<span aria-hidden="true">📞</span>' +
-      "<span>" + c.label + "</span>" +
+      '<svg aria-hidden="true"><use href="#i-phone"/></svg>' +
+      '<span class="contact-label">' + c.label + "</span>" +
       '<span class="contact-phone">' + c.phone + "</span>";
     contactsEl.appendChild(a);
   });

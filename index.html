@@ -3,133 +3,188 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#1d4ed8" />
+  <meta name="theme-color" content="#0b3d66" />
+  <meta name="description" content="의심스러운 문자·통화를 AI가 확인해 드리는 보이스피싱 예방 서비스" />
   <title>보이스피싱 지킴이</title>
+  <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json" />
 </head>
 <body>
+  <!-- ===== SVG 아이콘 정의 (한 번만 선언, 아래에서 재사용) ===== -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-shield" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" opacity=".18"/>
+        <path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"
+              d="M12 3 5 5.6v5.6c0 4.4 3 8.3 7 9.7 4-1.4 7-5.3 7-9.7V5.6L12 3Z"/>
+        <path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+              d="m8.7 11.8 2.3 2.3 4.3-4.6"/>
+      </symbol>
+      <symbol id="i-camera" viewBox="0 0 24 24">
+        <path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"
+              d="M3 8.5A1.5 1.5 0 0 1 4.5 7h2L8 5h8l1.5 2h2A1.5 1.5 0 0 1 21 8.5v9A1.5 1.5 0 0 1 19.5 19h-15A1.5 1.5 0 0 1 3 17.5v-9Z"/>
+        <circle cx="12" cy="13" r="3.4" fill="none" stroke="currentColor" stroke-width="1.8"/>
+      </symbol>
+      <symbol id="i-mic" viewBox="0 0 24 24">
+        <rect x="9" y="3" width="6" height="12" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/>
+        <path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              d="M6 11a6 6 0 0 0 12 0M12 17v4M9 21h6"/>
+      </symbol>
+      <symbol id="i-phone" viewBox="0 0 24 24">
+        <path fill="currentColor"
+              d="M6.6 3.5c.5 0 .9.3 1.1.8l1.2 3c.2.5.1 1-.3 1.4L8 9.2a13 13 0 0 0 6.8 6.8l.5-1.6c.4-.4.9-.5 1.4-.3l3 1.2c.5.2.8.6.8 1.1V20a1.5 1.5 0 0 1-1.6 1.5A17 17 0 0 1 2.5 5 1.5 1.5 0 0 1 4 3.5h2.6Z"/>
+      </symbol>
+      <symbol id="i-alert" viewBox="0 0 24 24">
+        <path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"
+              d="M12 3.5 21 19H3l9-15.5Z"/>
+        <path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" d="M12 9v4.5M12 16.4v.1"/>
+      </symbol>
+      <symbol id="i-check" viewBox="0 0 24 24">
+        <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              d="m5 12.5 4.5 4.5L19 7"/>
+      </symbol>
+      <symbol id="i-x" viewBox="0 0 24 24">
+        <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M6 6l12 12M18 6 6 18"/>
+      </symbol>
+      <symbol id="i-refresh" viewBox="0 0 24 24">
+        <path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+              d="M4 12a8 8 0 0 1 13.7-5.6L20 8M20 4v4h-4M20 12a8 8 0 0 1-13.7 5.6L4 16M4 20v-4h4"/>
+      </symbol>
+      <symbol id="i-bell" viewBox="0 0 24 24">
+        <path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+              d="M6 16V11a6 6 0 0 1 12 0v5l1.6 2.2H4.4L6 16ZM10 20a2 2 0 0 0 4 0"/>
+      </symbol>
+    </defs>
+  </svg>
+
   <!-- ================= 헤더 ================= -->
   <header class="app-header">
-    <span class="app-logo" aria-hidden="true">🛡️</span>
-    <span class="app-title">보이스피싱 지킴이</span>
+    <div class="app-header__inner">
+      <span class="app-brand">
+        <svg class="app-brand__mark" aria-hidden="true"><use href="#i-shield"/></svg>
+        <span class="app-brand__name">보이스피싱 지킴이</span>
+      </span>
+    </div>
   </header>
 
   <main class="app-main">
 
     <!-- ================= 화면 1: 업로드 ================= -->
     <section id="screen-upload" class="screen">
-      <h1 class="screen-heading">의심스러운 문자나 전화가 있나요?</h1>
-      <p class="screen-sub">
-        받은 문자·카톡 <b>캡처 사진</b>이나 <b>통화 녹음 파일</b>을 올리면<br />
+      <h1 class="page-title">의심스러운 문자나 전화가 있나요?</h1>
+      <p class="page-lead">
+        받은 문자·카톡 <b>캡처 사진</b>이나 <b>통화 녹음 파일</b>을 올리면
         보이스피싱인지 확인해 드려요.
       </p>
 
-      <!-- 파일 선택 영역 -->
-      <div class="upload-box">
-        <label for="file-input" class="upload-label" id="upload-label">
-          <span class="upload-icon" aria-hidden="true">📷</span>
-          <span class="upload-text">여기를 눌러<br />사진 또는 녹음 파일 선택</span>
-        </label>
-        <input
-          type="file"
-          id="file-input"
-          accept="image/*,audio/*"
-          hidden
-        />
-      </div>
+      <!-- 파일 선택 카드 -->
+      <label for="file-input" class="dropzone" id="upload-label">
+        <span class="dropzone__icon">
+          <svg aria-hidden="true"><use href="#i-camera"/></svg>
+        </span>
+        <span class="dropzone__title">사진 또는 녹음 파일 선택</span>
+        <span class="dropzone__hint">여기를 눌러 파일을 고르세요</span>
+      </label>
+      <input type="file" id="file-input" accept="image/*,audio/*" hidden />
 
       <!-- 선택한 파일 미리보기 -->
-      <div id="preview-area" class="preview-area" hidden>
-        <img id="preview-image" class="preview-image" alt="선택한 사진 미리보기" hidden />
-        <div id="preview-audio-wrap" hidden>
-          <span aria-hidden="true">🎧</span>
-          <span id="preview-audio-name" class="preview-file-name"></span>
+      <div id="preview-area" class="preview" hidden>
+        <img id="preview-image" class="preview__image" alt="선택한 사진 미리보기" hidden />
+        <div id="preview-audio-wrap" class="preview__audio" hidden>
+          <svg aria-hidden="true"><use href="#i-mic"/></svg>
+          <span id="preview-audio-name" class="preview__name"></span>
         </div>
-        <button type="button" id="clear-file-btn" class="link-btn">파일 다시 선택</button>
+        <button type="button" id="clear-file-btn" class="link-btn">다른 파일 선택</button>
       </div>
 
-      <!-- 검사 버튼 -->
-      <button type="button" id="analyze-btn" class="primary-btn" disabled>
+      <button type="button" id="analyze-btn" class="btn btn--primary" disabled>
         검사하기
       </button>
 
-      <p class="disclaimer">
+      <p class="fineprint">
         이 결과는 AI가 자동으로 분석한 참고용 판단이며, 실제와 다를 수 있습니다.
       </p>
     </section>
 
     <!-- ================= 화면 2: 분석 중 ================= -->
-    <section id="screen-loading" class="screen" hidden>
+    <section id="screen-loading" class="screen screen--center" hidden>
       <div class="spinner" aria-hidden="true"></div>
-      <p class="loading-text">분석하고 있어요...<br />잠시만 기다려 주세요.</p>
+      <p class="loading-text">분석하고 있어요<span class="dots"></span></p>
+      <p class="loading-sub">잠시만 기다려 주세요</p>
     </section>
 
     <!-- ================= 화면 3: 결과 ================= -->
     <section id="screen-result" class="screen" hidden>
-      <!-- 위험도 배지 -->
-      <div id="risk-badge" class="risk-badge">
-        <span id="risk-level-text" class="risk-level-text">위험</span>
-        <span id="risk-score-text" class="risk-score-text">위험도 92점</span>
+      <div id="risk-banner" class="risk-banner">
+        <svg class="risk-banner__icon" aria-hidden="true"><use href="#i-alert"/></svg>
+        <div>
+          <span id="risk-level-text" class="risk-banner__level">위험</span>
+          <span id="risk-score-text" class="risk-banner__score">위험도 92점</span>
+        </div>
       </div>
 
-      <!-- 요약 -->
       <p id="result-summary" class="result-summary">
         검찰을 사칭한 전형적인 보이스피싱입니다.
       </p>
 
       <!-- 지금 해야 할 행동 -->
-      <div class="action-card">
-        <h2 id="action-headline" class="action-headline">지금 바로 전화를 끊으세요</h2>
-        <ol id="action-steps" class="action-steps"></ol>
-        <div id="action-contacts" class="action-contacts"></div>
+      <div class="card action">
+        <p class="card__eyebrow">지금 해야 할 행동</p>
+        <h2 id="action-headline" class="action__headline">지금 바로 전화를 끊으세요</h2>
+        <ol id="action-steps" class="action__steps"></ol>
+        <div id="action-contacts" class="action__contacts"></div>
       </div>
 
       <!-- 근거 -->
-      <details class="reason-box" open>
-        <summary class="reason-summary">왜 이렇게 판단했나요?</summary>
+      <div class="card">
+        <p class="card__eyebrow">이렇게 판단한 이유</p>
         <ul id="result-reason" class="reason-list"></ul>
-      </details>
+      </div>
 
-      <!-- 보호자 알림 안내 -->
-      <p id="guardian-notice" class="guardian-notice" hidden>
-        📩 이 내용을 보호자에게도 알렸어요.
+      <!-- 보호자 알림 -->
+      <p id="guardian-notice" class="guardian" hidden>
+        <svg aria-hidden="true"><use href="#i-bell"/></svg>
+        이 내용을 보호자에게도 알렸어요.
       </p>
 
-      <!-- 고정 안내문 -->
-      <p class="disclaimer" id="result-disclaimer">
+      <p class="fineprint" id="result-disclaimer">
         이 결과는 AI의 참고용 판단이며 실제와 다를 수 있습니다.
       </p>
 
       <!-- 피드백 -->
-      <div class="feedback-box" id="feedback-box">
-        <p class="feedback-question">이 판정이 맞았나요?</p>
-        <div class="feedback-buttons">
-          <button type="button" class="feedback-btn" data-correct="true">맞아요</button>
-          <button type="button" class="feedback-btn" data-correct="false">아니에요</button>
+      <div class="feedback" id="feedback-box">
+        <p class="feedback__q">이 판정이 맞았나요?</p>
+        <div class="feedback__btns">
+          <button type="button" class="feedback__btn" data-correct="true">
+            <svg aria-hidden="true"><use href="#i-check"/></svg> 맞아요
+          </button>
+          <button type="button" class="feedback__btn" data-correct="false">
+            <svg aria-hidden="true"><use href="#i-x"/></svg> 아니에요
+          </button>
         </div>
-        <p class="feedback-thanks" id="feedback-thanks" hidden>
-          알려주셔서 감사합니다.
-        </p>
+        <p class="feedback__thanks" id="feedback-thanks" hidden>알려주셔서 감사합니다.</p>
       </div>
 
-      <!-- 다시 검사 -->
-      <button type="button" id="restart-btn" class="secondary-btn">
-        다른 것 검사하기
+      <button type="button" id="restart-btn" class="btn btn--ghost">
+        <svg aria-hidden="true"><use href="#i-refresh"/></svg> 다른 것 검사하기
       </button>
     </section>
 
-    <!-- ================= 오류 표시 ================= -->
-    <section id="screen-error" class="screen" hidden>
-      <p class="error-text">
-        분석에 실패했어요.<br />인터넷 연결을 확인하고 다시 시도해 주세요.
-      </p>
-      <button type="button" id="error-retry-btn" class="secondary-btn">
-        처음으로
-      </button>
+    <!-- ================= 오류 ================= -->
+    <section id="screen-error" class="screen screen--center" hidden>
+      <svg class="error-icon" aria-hidden="true"><use href="#i-alert"/></svg>
+      <p class="loading-text">분석에 실패했어요</p>
+      <p class="loading-sub">인터넷 연결을 확인하고 다시 시도해 주세요</p>
+      <button type="button" id="error-retry-btn" class="btn btn--ghost">처음으로</button>
     </section>
 
   </main>
+
+  <footer class="app-footer">
+    보이스피싱 지킴이 · AI 참고용 판단 서비스이며 실제와 다를 수 있습니다
+  </footer>
 
   <script src="app.js"></script>
 </body>
