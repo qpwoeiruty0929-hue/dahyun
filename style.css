@@ -1,0 +1,287 @@
+/* =========================================================
+   보이스피싱 지킴이 — 스타일
+   고령층 사용자를 위해: 큰 글씨, 큰 버튼, 높은 대비
+   ========================================================= */
+
+:root {
+  --color-bg: #f4f6fb;
+  --color-card: #ffffff;
+  --color-text: #1a1a1a;
+  --color-text-sub: #555b66;
+  --color-primary: #1d4ed8;
+  --color-primary-dark: #1e40af;
+  --color-border: #d3d9e3;
+
+  /* 위험도 4단계 색 */
+  --risk-safe: #15803d;      /* 안전 - 초록 */
+  --risk-caution: #b45309;   /* 의심 - 주황 */
+  --risk-warning: #c2410c;   /* 경고 - 진한 주황 */
+  --risk-danger: #b91c1c;    /* 위험 - 빨강 */
+
+  --radius: 16px;
+  --font-base: 20px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: var(--font-base);
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* ---------- 헤더 ---------- */
+.app-header {
+  background: var(--color-primary);
+  color: #fff;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.app-logo { font-size: 26px; }
+.app-title { font-size: 22px; font-weight: 700; }
+
+/* ---------- 본문 레이아웃 ---------- */
+.app-main {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 24px 18px 60px;
+}
+
+.screen { animation: fade-in 0.25s ease; }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+.screen-heading {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  word-break: keep-all;
+}
+.screen-sub {
+  color: var(--color-text-sub);
+  font-size: 19px;
+  margin-bottom: 28px;
+  word-break: keep-all;
+}
+
+/* ---------- 업로드 영역 ---------- */
+.upload-box { margin-bottom: 20px; }
+.upload-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: var(--color-card);
+  border: 3px dashed var(--color-primary);
+  border-radius: var(--radius);
+  padding: 44px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.upload-label:active { background: #eef2ff; }
+.upload-icon { font-size: 52px; }
+.upload-text { font-size: 21px; font-weight: 600; color: var(--color-primary-dark); }
+
+/* 미리보기 */
+.preview-area {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.preview-image {
+  max-width: 100%;
+  max-height: 320px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+.preview-file-name { font-weight: 600; margin-left: 6px; }
+
+/* ---------- 버튼 ---------- */
+.primary-btn, .secondary-btn {
+  display: block;
+  width: 100%;
+  padding: 20px;
+  font-size: 22px;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-family: inherit;
+}
+.primary-btn {
+  background: var(--color-primary);
+  color: #fff;
+  margin-bottom: 18px;
+}
+.primary-btn:active { background: var(--color-primary-dark); }
+.primary-btn:disabled { background: #a9b4c7; cursor: not-allowed; }
+
+.secondary-btn {
+  background: #fff;
+  color: var(--color-primary-dark);
+  border: 2px solid var(--color-primary);
+  margin-top: 24px;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 18px;
+  text-decoration: underline;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 6px;
+}
+
+/* ---------- 안내문 ---------- */
+.disclaimer {
+  margin-top: 8px;
+  font-size: 16px;
+  color: var(--color-text-sub);
+  text-align: center;
+  word-break: keep-all;
+}
+
+/* ---------- 분석 중 ---------- */
+#screen-loading { text-align: center; padding-top: 80px; }
+.spinner {
+  width: 64px;
+  height: 64px;
+  border: 8px solid #d9e0f0;
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  margin: 0 auto 28px;
+  animation: spin 0.9s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-size: 22px; font-weight: 600; }
+
+/* ---------- 결과: 위험도 배지 ---------- */
+.risk-badge {
+  border-radius: var(--radius);
+  padding: 24px 20px;
+  text-align: center;
+  color: #fff;
+  margin-bottom: 20px;
+}
+.risk-badge[data-level="안전"]  { background: var(--risk-safe); }
+.risk-badge[data-level="의심"]  { background: var(--risk-caution); }
+.risk-badge[data-level="경고"]  { background: var(--risk-warning); }
+.risk-badge[data-level="위험"]  { background: var(--risk-danger); }
+.risk-level-text { display: block; font-size: 40px; font-weight: 800; letter-spacing: 2px; }
+.risk-score-text { display: block; font-size: 19px; margin-top: 6px; opacity: 0.95; }
+
+.result-summary {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 22px;
+  word-break: keep-all;
+}
+
+/* ---------- 행동 카드 ---------- */
+.action-card {
+  background: var(--color-card);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.action-headline {
+  font-size: 23px;
+  font-weight: 800;
+  color: var(--color-primary-dark);
+  margin-bottom: 16px;
+  word-break: keep-all;
+}
+.action-steps { margin: 0 0 4px 0; padding-left: 26px; }
+.action-steps li { font-size: 20px; margin-bottom: 12px; word-break: keep-all; }
+
+.action-contacts { margin-top: 16px; display: flex; flex-direction: column; gap: 12px; }
+.contact-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 18px;
+  font-size: 21px;
+  font-weight: 700;
+  background: var(--risk-danger);
+  color: #fff;
+  border-radius: 12px;
+  text-decoration: none;
+}
+.contact-btn .contact-phone { font-weight: 800; }
+
+/* ---------- 근거 ---------- */
+.reason-box {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+.reason-summary { font-size: 20px; font-weight: 700; cursor: pointer; }
+.reason-list { margin-top: 14px; padding-left: 22px; }
+.reason-list li { font-size: 19px; margin-bottom: 10px; word-break: keep-all; }
+
+/* ---------- 보호자 알림 ---------- */
+.guardian-notice {
+  background: #eef2ff;
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+/* ---------- 피드백 ---------- */
+.feedback-box {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 20px;
+  text-align: center;
+  margin-top: 8px;
+}
+.feedback-question { font-size: 20px; font-weight: 700; margin-bottom: 14px; }
+.feedback-buttons { display: flex; gap: 12px; }
+.feedback-btn {
+  flex: 1;
+  padding: 16px;
+  font-size: 20px;
+  font-weight: 700;
+  border: 2px solid var(--color-primary);
+  background: #fff;
+  color: var(--color-primary-dark);
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.feedback-btn:active { background: #eef2ff; }
+.feedback-btn:disabled { opacity: 0.5; cursor: default; }
+.feedback-thanks { margin-top: 14px; font-size: 18px; font-weight: 600; color: var(--risk-safe); }
+
+/* ---------- 오류 ---------- */
+#screen-error { text-align: center; padding-top: 60px; }
+.error-text { font-size: 21px; font-weight: 600; margin-bottom: 24px; word-break: keep-all; }
+
+/* ---------- 아주 작은 화면 대응 ---------- */
+@media (max-width: 360px) {
+  :root { --font-base: 18px; }
+  .screen-heading { font-size: 23px; }
+  .risk-level-text { font-size: 34px; }
+}

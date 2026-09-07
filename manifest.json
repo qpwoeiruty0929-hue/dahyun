@@ -1,0 +1,14 @@
+{
+  "name": "보이스피싱 지킴이",
+  "short_name": "지킴이",
+  "description": "의심스러운 문자·통화를 AI가 확인해 주는 서비스",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4f6fb",
+  "theme_color": "#1d4ed8",
+  "lang": "ko",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
